@@ -13,7 +13,7 @@ from django.contrib.auth.models import BaseUserManager
 class UserProfileManager(BaseUserManager):
 	"""Helps django work with custom user model """
 
-	def create_user(self, name, password=None, phoneNumber=0):
+	def create_user(self, password=None, phoneNumber=0):
 		"""Creates a new profile object"""
 
 		if not phoneNumber:
@@ -21,7 +21,7 @@ class UserProfileManager(BaseUserManager):
 
 		# email = self.normalize_email(email)
 
-		user = self.model(phoneNumber=phoneNumber, name=name)
+		user = self.model(phoneNumber=phoneNumber)
 
 		user.set_password(password)
 
@@ -30,10 +30,10 @@ class UserProfileManager(BaseUserManager):
 		return user
 
 
-	def create_superuser(self, name, password, phoneNumber=0):
+	def create_superuser(self, password, phoneNumber=0):
 		"""Creates a new supersued"""
 
-		user = self.create_user(name, password, phoneNumber)
+		user = self.create_user(password, phoneNumber)
 
 		user.is_superuser = True
 		user.is_staff = True
@@ -77,16 +77,16 @@ class UserProfile(AbstractBaseUser, PermissionsMixin):
 	def get_full_name(self):
 		"""Used to get a user's full name """
 
-		return self.name
+		return str(self.phoneNumber)
 
 	def get_short_name(self):
 		"""Used to get a user's short name  """
 
-		return self.name
+		return str(self.phoneNumber)
 
 	def __str__(self):
 		"""django uses this to convert to string """
 
-		return self.email
+		return str(self.phoneNumber)
 
 
