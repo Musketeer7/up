@@ -5,7 +5,7 @@ from . import models
 class UserSerializer(serializers.Serializer):
     class Meta:
         model = User
-        fields = ('url', 'username', 'email','groups', 'phone')
+        fields = ('url', 'username', 'groups', 'phone')
 
 
 class GroupSerializer(serializers.HyperlinkedModelSerializer):
@@ -19,14 +19,14 @@ class UserProfileSerializer(serializers.ModelSerializer):
 
 	class Meta:
 		model = models.UserProfile
-		fields = ('id', 'email', 'name', 'password', 'phoneNumber')
+		fields = ('id', 'name', 'password', 'phoneNumber')
 		extra_kwargs = {'password': {'write_only': True}}
 
 	def create(self, validated_data):
 		"""Create and return a new user."""
 
 		user = models.UserProfile(
-			email=validated_data['email'],
+			phoneNumber=validated_data['phoneNumber'],
 			name=validated_data['name']
 		)
 

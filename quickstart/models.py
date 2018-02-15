@@ -13,15 +13,15 @@ from django.contrib.auth.models import BaseUserManager
 class UserProfileManager(BaseUserManager):
 	"""Helps django work with custom user model """
 
-	def create_user(self, email, name, password=None, phoneNumber=0):
+	def create_user(self, name, password=None, phoneNumber=0):
 		"""Creates a new profile object"""
 
-		if not email:
-			raise ValueError('Users must have an email address.')
+		if not phoneNumber:
+			raise ValueError('Users must have an phone number')
 
-		email = self.normalize_email(email)
+		# email = self.normalize_email(email)
 
-		user = self.model(email=email, phoneNumber=phoneNumber, name=name)
+		user = self.model(phoneNumber=phoneNumber, name=name)
 
 		user.set_password(password)
 
@@ -30,10 +30,10 @@ class UserProfileManager(BaseUserManager):
 		return user
 
 
-	def create_superuser(self, email, name, password, phoneNumber=0):
+	def create_superuser(self, name, password, phoneNumber=0):
 		"""Creates a new supersued"""
 
-		user = self.create_user(email, name, password, phoneNumber)
+		user = self.create_user(name, password, phoneNumber)
 
 		user.is_superuser = True
 		user.is_staff = True
@@ -63,16 +63,16 @@ class UserProfileManager(BaseUserManager):
 class UserProfile(AbstractBaseUser, PermissionsMixin):
 	"""Represents a user profile inside our system """
 
-	email = models.EmailField(max_length=255, unique=True)
+	# email = models.EmailField(max_length=255, unique=True)
 	name = models.CharField(max_length=255)
-	phoneNumber = models.IntegerField(unique=False, default=0)
+	phoneNumber = models.IntegerField(unique=True, default=0)
 	is_active = models.BooleanField(default=True)
 	is_staff = models.BooleanField(default=False)
 
 	objects = UserProfileManager()
 
-	USERNAME_FIELD = 'email'
-	REQUIRED_FIELDS = ['name']
+	USERNAME_FIELD = 'phoneNumber'
+	REQUIRED_FIELDS = []
 
 	def get_full_name(self):
 		"""Used to get a user's full name """
