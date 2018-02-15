@@ -1,6 +1,6 @@
 from django.contrib.auth.models import Group
 from rest_framework import viewsets
-from quickstart.serializers import UserSerializer, GroupSerializer
+from quickstart.serializers import UserSerializer, GroupSerializer #VerificationSerializer
 from .models import UserProfile
 from . import models
 from . import serializers
@@ -24,6 +24,18 @@ class GroupViewSet(viewsets.ModelViewSet):
     queryset = Group.objects.all()
     serializer_class = GroupSerializer
 
+
+
+# class VerificationViewSet(viewsets.ModelViewSet):
+#     """
+#     API endpoint that allows groups to be viewed or edited.
+#     """
+#     queryset = models.Verification.objects.all()
+#     serializer_class = VerificationSerializer
+
+
+
+
 class UserProfileViewSet(viewsets.ModelViewSet):
     """Handles creating, reading and updating profiles."""
 
@@ -32,6 +44,8 @@ class UserProfileViewSet(viewsets.ModelViewSet):
 
     authentication_classes = (TokenAuthentication,)
     permission_classes = (permissions.UpdateOwnProfile,)
+
+
 
 class LoginViewSet(viewsets.ViewSet):
     """Log in."""

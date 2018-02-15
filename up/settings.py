@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     'rest_framework',
     'quickstart',
     'rest_framework.authtoken',
+    'register',
 ]
 
 MIDDLEWARE = [

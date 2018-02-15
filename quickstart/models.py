@@ -60,6 +60,7 @@ class UserProfileManager(BaseUserManager):
 
 
 
+
 class UserProfile(AbstractBaseUser, PermissionsMixin):
 	"""Represents a user profile inside our system """
 

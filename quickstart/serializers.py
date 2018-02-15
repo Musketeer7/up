@@ -14,6 +14,13 @@ class GroupSerializer(serializers.HyperlinkedModelSerializer):
         fields = ('url', 'name')
 
 
+# class VerificationSerializer(serializers.HyperlinkedModelSerializer):
+#     class Meta:
+#         model = models.Verification
+#         fields = ('str')
+
+
+
 class UserProfileSerializer(serializers.ModelSerializer):
 	"""A serializer for our user profile objects."""
 
