@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     'rest_framework',
     'quickstart',
     'rest_framework.authtoken',
+    'sms',
     'register',
 ]
 
@@ -122,5 +123,14 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/1.11/howto/static-files/
 
 STATIC_URL = '/static/'
+
+
+# SMS Settings Configurations
+
+SMS_RETRY_MINUTES = 5
+SMS_USERNAME = 'sms_username'
+SMS_PASSWORD = 'sms_password'
+SMS_NUMBER = 'sms_number'
+
 
 AUTH_USER_MODEL = 'quickstart.UserProfile'

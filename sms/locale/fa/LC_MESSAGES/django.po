@@ -1,0 +1,100 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2017-05-29 08:41+0000\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+
+msgid "Farvardin"
+msgstr ""
+
+msgid "Ordibehesht"
+msgstr ""
+
+msgid "Khordad"
+msgstr ""
+
+msgid "Tir"
+msgstr ""
+
+msgid "Mordad"
+msgstr ""
+
+msgid "Shahrivar"
+msgstr ""
+
+msgid "Mehr"
+msgstr ""
+
+msgid "Aban"
+msgstr ""
+
+msgid "Azar"
+msgstr ""
+
+msgid "Dey"
+msgstr ""
+
+msgid "Bahman"
+msgstr ""
+
+msgid "Esfand"
+msgstr ""
+
+msgid "Pending"
+msgstr ""
+
+msgid "Failed"
+msgstr ""
+
+msgid "Sent"
+msgstr "فرستاده"
+
+msgid "Delivered"
+msgstr "رسیده"
+
+msgid "Text"
+msgstr "متن"
+
+msgid "To"
+msgstr "به"
+
+msgid "State"
+msgstr "وضعیت"
+
+msgid "Reference Code"
+msgstr "کد رهگیری"
+
+msgid "Error"
+msgstr "خطا"
+
+msgid "Job Type"
+msgstr "نوع فعالیت"
+
+msgid "Created Time"
+msgstr "ساخته‌شده"
+
+msgid "Backend"
+msgstr "زیرساخت"
+
+msgid "Description"
+msgstr "توضیحات"
+
+msgid "Message"
+msgstr "پیام"
+
+msgid "Messages"
+msgstr "پیام‌ها"

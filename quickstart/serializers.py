@@ -19,7 +19,9 @@ class TransactionSerializer(serializers.HyperlinkedModelSerializer):
 
 	class Meta:
 		model = models.Transaction
-		fields = ('transaction_hash', 'transaction_time', 'user')
+		fields = ('transaction_hash', 'transaction_time', 'user', 'uid')
+
+
 
 
 # class VerificationSerializer(serializers.HyperlinkedModelSerializer):

@@ -123,6 +123,8 @@ class Transaction(models.Model):
 	transaction_hash = models.CharField(max_length=255)
 	transaction_time = models.DateTimeField(auto_now_add=True, blank=True)
 	user = models.ForeignKey(UserProfile, on_delete=models.CASCADE)
+	uid = models.IntegerField(default=0)
+
 
 	def __str__(self):
 		return (str(self.transaction_time) + ',' + self.transaction_hash)
