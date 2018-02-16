@@ -30,6 +30,7 @@ router = routers.DefaultRouter()
 router.register(r'users', views.UserProfileViewSet)
 router.register(r'groups', views.GroupViewSet)
 router.register(r'login', views.LoginViewSet, base_name='login')
+router.register(r'^transaction', views.TransactionViewSet, base_name='transaction')
 # router.register('verification', views.VerificationViewSet, base_name='verification')
 router.register(r'register', Register, base_name='register')
 

@@ -14,12 +14,18 @@ class GroupSerializer(serializers.HyperlinkedModelSerializer):
         fields = ('url', 'name')
 
 
+class TransactionSerializer(serializers.HyperlinkedModelSerializer):
+	"""Transaction Serializer."""
+
+	class Meta:
+		model = models.Transaction
+		fields = ('transaction_hash', 'transaction_time', 'user')
+
+
 # class VerificationSerializer(serializers.HyperlinkedModelSerializer):
 #     class Meta:
 #         model = models.Verification
 #         fields = ('str')
-
-
 
 class UserProfileSerializer(serializers.ModelSerializer):
 	"""A serializer for our user profile objects."""

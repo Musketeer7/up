@@ -1,7 +1,7 @@
 from django.contrib.auth.models import Group
 from django.views.generic import View
 
-from quickstart.serializers import UserSerializer, GroupSerializer #VerificationSerializer
+from quickstart.serializers import UserSerializer, GroupSerializer, TransactionSerializer #VerificationSerializer
 from .models import UserProfile
 from .models import PasscodeVerify
 from . import models
@@ -44,6 +44,14 @@ class GroupViewSet(viewsets.ModelViewSet):
     serializer_class = GroupSerializer
 
 
+class TransactionViewSet(viewsets.ModelViewSet):
+    """Handles transactions."""
+
+    queryset = models.Transaction.objects.all()
+    serializer_class = serializers.TransactionSerializer
+    
+
+
 
 # class VerificationViewSet(viewsets.ModelViewSet):
 #     """
@@ -75,6 +83,8 @@ class LoginViewSet(viewsets.ViewSet):
         """to create a token"""
 
         return ObtainAuthToken().post(request)
+
+
 
 @csrf_exempt
 @api_view(['POST'])

@@ -4,6 +4,9 @@ from django.contrib.auth.models import AbstractBaseUser
 from django.contrib.auth.models import PermissionsMixin
 from django.contrib.auth.models import BaseUserManager
 
+from datetime import datetime
+
+
 # from django.contrib.auth import get_user_model
 
 
@@ -37,7 +40,7 @@ class UserProfileManager(BaseUserManager):
 
 		user.is_superuser = True
 		user.is_staff = True
-
+		is_active = True
 		user.save(using=self._db)
 
 		return user
@@ -112,5 +115,16 @@ class PasscodeVerify(models.Model):
  
 	def __str__(self):
 		return (str(self.mobile) + ',' + self.passcode)
+
+
+class Transaction(models.Model):
+	"""for storing transactions."""
+
+	transaction_hash = models.CharField(max_length=255)
+	transaction_time = models.DateTimeField(auto_now_add=True, blank=True)
+	user = models.ForeignKey(UserProfile, on_delete=models.CASCADE)
+
+	def __str__(self):
+		return (str(self.transaction_time) + ',' + self.transaction_hash)
 
 

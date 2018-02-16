@@ -105,6 +105,7 @@ def verify_and_create(request):
 
 		return Response(response_data,status=status.HTTP_201_CREATED)
 
+		
 #Done
 #Re-register request authorization
 
