@@ -1,5 +1,3 @@
-
-
 """
 from django.conf.urls import url, include
 from rest_framework import router
@@ -20,17 +18,20 @@ urlpatterns = [
 ]
 """
 
-
 from django.conf.urls import url, include
 from rest_framework import routers
 from quickstart import views
 from django.contrib import admin
 
+from quickstart.views import Register
+from quickstart.views import verify_and_create
+
 router = routers.DefaultRouter()
 router.register(r'users', views.UserProfileViewSet)
 router.register(r'groups', views.GroupViewSet)
-router.register('login', views.LoginViewSet, base_name='login')
+router.register(r'login', views.LoginViewSet, base_name='login')
 # router.register('verification', views.VerificationViewSet, base_name='verification')
+router.register(r'register', Register, base_name='register')
 
 
 # Wire up our API using automatic URL routing.
@@ -39,5 +40,7 @@ urlpatterns = [
     url(r'^', include(router.urls)),
     url(r'admin/', admin.site.urls),
     url(r'^api-auth/', include('rest_framework.urls', namespace='rest_framework')),
-    url(r'^signup/', include('register.urls'))
+    url(r'^signup/', include('register.urls')),
+	url(r'^register/$',Register),
+	url(r'^verify/$', verify_and_create),
 ]
