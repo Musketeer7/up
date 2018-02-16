@@ -41,7 +41,7 @@ INSTALLED_APPS = [
     'quickstart',
     'rest_framework.authtoken',
     'sms',
-    'register',
+    # 'register',
 ]
 
 MIDDLEWARE = [
@@ -128,9 +128,11 @@ STATIC_URL = '/static/'
 # SMS Settings Configurations
 
 SMS_RETRY_MINUTES = 5
+SMS_BACKEND = '' #e.g. sms.backends.ConsoleBackend
 SMS_USERNAME = 'sms_username'
 SMS_PASSWORD = 'sms_password'
 SMS_NUMBER = 'sms_number'
+
 
 
 AUTH_USER_MODEL = 'quickstart.UserProfile'
