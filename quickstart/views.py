@@ -22,11 +22,13 @@ from rest_framework.response import Response
 from django.views.decorators.csrf import csrf_exempt
 from django.utils.decorators import method_decorator
 
+import requests
 import random
 import binascii
 import os
 import re
 
+from sms.sms import send_message
 
 
 class UserViewSet(viewsets.ModelViewSet):
@@ -103,42 +105,53 @@ def Register(request):
 
 			data = request.data
 
-			response_data = {'code' : data }
+			d1 = data['mobile']
 
-			mobile = request.POST['mobile']
-			device_id = request.POST['device_id']
+			response_data = {'code' : d1 }
+
+			mobile = data['mobile']
+			device_id = data['device_id']
 			
 		except:
-			return Response(response_data, status=status.HTTP_400_BAD_REQUEST)
+			return Response(response_data, status=status.HTTP_401_UNAUTHORIZED)
 		validate = re.search('^[789]\d{9}$', mobile)
 		if validate is None:
-			return Response(response_data, status=status.HTTP_400_BAD_REQUEST)
+			return Response(response_data, status=status.HTTP_402_PAYMENT_REQUIRED)
 			#check user already
 		try:
-			user = UserProfile.objects.get(phoneNumber = mobile, device_ident = device_id)
+			user = UserProfile.objects.get(phoneNumber = mobile)
 		except UserProfile.DoesNotExist:
 			user = ''
 		
+		#create passcode and send response
+		pl = random.sample([1,2,3,4,5,6,7,8,9,0],4)
+		passcode = ''.join(str(p) for p in pl)
+
+
 		if user:
 			user.token = ''
 			response_data['code'] = 'Re-Registering'
 			user.is_verified =  False
 			user.save()
 			
-			#create passcode and send response
-		pl = random.sample([1,2,3,4,5,6,7,8,9,0],4)
-		passcode = ''.join(str(p) for p in pl)
+		else:
 
+			response_data['code'] = 'New-User'
+			payload = {"name": "", "password": passcode, "phoneNumber": mobile, "device_ident": passcode}
+			r = requests.post("http://127.0.0.1:8000/users/", data=payload)
+
+
+		"""
 		try:
 			#create entry in passcode table for verification
-			passcode_entry, created = PasscodeVerify.objects.update_or_create(mobile=mobile,  defaults={'device_ident' : device_id, 'passcode' : passcode,'is_verified' : False})
+			passcode_entry, created = UserProfile.objects.update_or_create(phoneNumber=mobile,  defaults={'device_ident' : passcode,'is_verified' : False})
 
 		except:
 			response_data['is_verified']  = "Expire"
-			return Response(response_data, status = status.HTTP_400_BAD_REQUEST)
+			return Response(response_data, status = status.HTTP_403_FORBIDDEN)
 		response_data['passcode'] = passcode
-		response_data['code'] = 'Success'
-
+		# response_data['code'] = 'Success'
+		"""
 
 		# SMS api to send passcode
 		send_message(mobile, passcode, job=None, description="sending verification passcode", force=True)
@@ -154,23 +167,22 @@ def verify_and_create(request):
 	response_data = {'code' : 'Invalid Data' }
 	if request.method == 'POST':
 		try:
-			mobile = request.POST['mobile']
-			device_id = request.POST['device_id']
-			passcode = request.POST['passcode']
+			mobile = request.data['mobile']
+			passcode = request.data['passcode']
 		except:
 			return Response(response_data,status=status.HTTP_400_BAD_REQUEST)
 
 		try:
-			valid = PasscodeVerify.objects.get(mobile = mobile, device_ident = device_id , passcode = passcode, is_verified = False)
+			valid = UserProfile.objects.get(phoneNumber = mobile, device_ident = passcode, is_active = False)
 		except PasscodeVerify.DoesNotExist:
 			response_data['code'] = 'Invalid/Expired passcode'
-			return Response(response_data,status=status.HTTP_400_BAD_REQUEST)
+			return Response(response_data,status=status.HTTP_401_UNAUTHORIZED)
 
 		if valid:
-			valid.is_verified = True
+			valid.is_active = True
 			valid.save()
 
-
+		"""
 		#Generate token 
 		token = binascii.hexlify(os.urandom(20)).decode()
 		created = ''
@@ -179,10 +191,12 @@ def verify_and_create(request):
 			user,created = UserBase.objects.update_or_create(mobile = mobile,  defaults = {'device_ident' : device_id , 'token' : token ,'is_active' : True})
 		except:
 			response_data['code'] = 'User creation error'
-			return Response(response_data,status=status.HTTP_400_BAD_REQUEST)
+			return Response(response_data,status=status.HTTP_402_PAYMENT_REQUIRED)
 
 		response_data['code'] = 'Success User created'
 		response_data['token'] = token
 
-		return Response(response_data,status=status.HTTP_201_CREATED)
+		return Response(response_data,status=status.HTTP_403_FORBIDDEN)
+		"""
 
+		

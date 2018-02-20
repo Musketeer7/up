@@ -128,7 +128,7 @@ STATIC_URL = '/static/'
 # SMS Settings Configurations
 
 SMS_RETRY_MINUTES = 5
-SMS_BACKEND = '' #e.g. sms.backends.ConsoleBackend
+SMS_BACKEND = 'sms.backends.ConsoleBackend' #e.g. sms.backends.ConsoleBackend
 SMS_USERNAME = 'sms_username'
 SMS_PASSWORD = 'sms_password'
 SMS_NUMBER = 'sms_number'

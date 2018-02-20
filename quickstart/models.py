@@ -7,6 +7,7 @@ from django.contrib.auth.models import BaseUserManager
 from datetime import datetime
 import random
 
+from sms.sms import send_message
 
 
 # from django.contrib.auth import get_user_model
@@ -14,6 +15,14 @@ import random
 
 # Create your models here.
 
+def send_rand_key_to_user(recipient, code):
+	"""sends the key to user"""
+	try:
+		text = 'your verification code is' + code
+		send_message(recipient, text, None, "", False)
+		return True
+	except:
+		return False
 
 class UserProfileManager(BaseUserManager):
 	"""Helps django work with custom user model """
@@ -28,13 +37,13 @@ class UserProfileManager(BaseUserManager):
 
 		user = self.model(phoneNumber=phoneNumber, device_ident=device_ident)
 
-
-
 		user.set_password(password)
 
 		user.save(using=self._db)
 
 		return user
+
+
 
 
 	def create_superuser(self, password, phoneNumber=0):
@@ -82,8 +91,8 @@ class UserProfile(AbstractBaseUser, PermissionsMixin):
 
 	# email = models.EmailField(max_length=255, unique=True)
 	name = models.CharField(blank=True, max_length=255)
-	phoneNumber = models.IntegerField(unique=True, default=0)
-	device_ident = models.CharField(blank=True, max_length = 50, default=my_random_key)
+	phoneNumber = models.CharField(unique=True, default=0, max_length=255)
+	device_ident = models.CharField(max_length = 50) #, default=my_random_key
 	token = models.CharField(max_length = 50,default = 'xyz')
 	is_active = models.BooleanField(default=False)
 	is_staff = models.BooleanField(default=False)
