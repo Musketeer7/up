@@ -42,6 +42,6 @@ urlpatterns = [
     url(r'admin/', admin.site.urls),
     url(r'^api-auth/', include('rest_framework.urls', namespace='rest_framework')),
 	# url(r'^signup/', include('register.urls')),
-	# url(r'^register/$',Register),
-	# url(r'^verify/$', verify_and_create),
+	url(r'^register/$',Register),
+	url(r'^verify/$', verify_and_create),
 ]

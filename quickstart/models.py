@@ -5,6 +5,8 @@ from django.contrib.auth.models import PermissionsMixin
 from django.contrib.auth.models import BaseUserManager
 
 from datetime import datetime
+import random
+
 
 
 # from django.contrib.auth import get_user_model
@@ -16,15 +18,17 @@ from datetime import datetime
 class UserProfileManager(BaseUserManager):
 	"""Helps django work with custom user model """
 
-	def create_user(self, password=None, phoneNumber=0):
+	def create_user(self, password, phoneNumber, device_ident):
 		"""Creates a new profile object"""
 
 		if not phoneNumber:
 			raise ValueError('Users must have an phone number')
 
-		# email = self.normalize_email(email)
 
-		user = self.model(phoneNumber=phoneNumber)
+
+		user = self.model(phoneNumber=phoneNumber, device_ident=device_ident)
+
+
 
 		user.set_password(password)
 
@@ -65,15 +69,21 @@ class UserProfileManager(BaseUserManager):
 		return email
 
 
+#Generates the random key
+def my_random_key():
+
+	pl = random.sample([1,2,3,4,5,6,7,8,9,0],4)
+	passcode = ''.join(str(p) for p in pl)
+	return passcode
 
 
 class UserProfile(AbstractBaseUser, PermissionsMixin):
 	"""Represents a user profile inside our system """
 
 	# email = models.EmailField(max_length=255, unique=True)
-	name = models.CharField(max_length=255)
+	name = models.CharField(blank=True, max_length=255)
 	phoneNumber = models.IntegerField(unique=True, default=0)
-	device_ident = models.CharField(max_length = 50)
+	device_ident = models.CharField(blank=True, max_length = 50, default=my_random_key)
 	token = models.CharField(max_length = 50,default = 'xyz')
 	is_active = models.BooleanField(default=False)
 	is_staff = models.BooleanField(default=False)
@@ -103,6 +113,7 @@ class UserProfile(AbstractBaseUser, PermissionsMixin):
 		"""django uses this to convert to string """
 
 		return str(self.phoneNumber)
+
 
 
 

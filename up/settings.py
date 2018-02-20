@@ -134,5 +134,4 @@ SMS_PASSWORD = 'sms_password'
 SMS_NUMBER = 'sms_number'
 
 
-
 AUTH_USER_MODEL = 'quickstart.UserProfile'

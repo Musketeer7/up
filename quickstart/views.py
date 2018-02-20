@@ -100,6 +100,11 @@ def Register(request):
 		
 		#Raise exception in case bad data
 		try:
+
+			data = request.data
+
+			response_data = {'code' : data }
+
 			mobile = request.POST['mobile']
 			device_id = request.POST['device_id']
 			
