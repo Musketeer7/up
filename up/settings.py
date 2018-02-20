@@ -128,10 +128,10 @@ STATIC_URL = '/static/'
 # SMS Settings Configurations
 
 SMS_RETRY_MINUTES = 5
-SMS_BACKEND = 'sms.backends.ConsoleBackend' #e.g. sms.backends.ConsoleBackend
-SMS_USERNAME = 'sms_username'
-SMS_PASSWORD = 'sms_password'
-SMS_NUMBER = 'sms_number'
+SMS_BACKEND = 'sms.backends.KavenegarBackend' #e.g. sms.backends.ConsoleBackend
+SMS_USERNAME = 'antissblog@gmail.com'
+SMS_PASSWORD = 'perspolis52'
+SMS_NUMBER = '3000853853'
 
 
 AUTH_USER_MODEL = 'quickstart.UserProfile'

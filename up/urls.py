@@ -22,9 +22,11 @@ from django.conf.urls import url, include
 from rest_framework import routers
 from quickstart import views
 from django.contrib import admin
+from django.views.decorators.csrf import csrf_exempt
 
 from quickstart.views import Register
 from quickstart.views import verify_and_create
+
 
 router = routers.DefaultRouter()
 router.register(r'users', views.UserProfileViewSet)

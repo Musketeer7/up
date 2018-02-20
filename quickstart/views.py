@@ -1,6 +1,7 @@
 from django.contrib.auth.models import Group
 from django.views.generic import View
 from django.http import HttpResponse
+from django.shortcuts import get_object_or_404
 
 from quickstart.serializers import UserSerializer, GroupSerializer, TransactionSerializer #VerificationSerializer
 from .models import UserProfile
@@ -29,6 +30,8 @@ import os
 import re
 
 from sms.sms import send_message
+
+
 
 
 class UserViewSet(viewsets.ModelViewSet):
@@ -103,21 +106,17 @@ def Register(request):
 		#Raise exception in case bad data
 		try:
 
-			data = request.data
-
-			d1 = data['mobile']
-
-			response_data = {'code' : d1 }
-
-			mobile = data['mobile']
-			device_id = data['device_id']
+			mobile = request.data['mobile']
+			# device_id = request.data['device_id']
 			
 		except:
 			return Response(response_data, status=status.HTTP_401_UNAUTHORIZED)
-		validate = re.search('^[789]\d{9}$', mobile)
+
+		validate = re.search('^[9]\d{9}$', mobile)
 		if validate is None:
 			return Response(response_data, status=status.HTTP_402_PAYMENT_REQUIRED)
-			#check user already
+			
+		#check user already
 		try:
 			user = UserProfile.objects.get(phoneNumber = mobile)
 		except UserProfile.DoesNotExist:
@@ -132,6 +131,7 @@ def Register(request):
 			user.token = ''
 			response_data['code'] = 'Re-Registering'
 			user.is_verified =  False
+			user.device_ident = passcode
 			user.save()
 			
 		else:
@@ -139,8 +139,10 @@ def Register(request):
 			response_data['code'] = 'New-User'
 			payload = {"name": "", "password": passcode, "phoneNumber": mobile, "device_ident": passcode}
 			r = requests.post("http://127.0.0.1:8000/users/", data=payload)
+		
 
-
+		# SMS api to send passcode
+		send_message(mobile, passcode, None, "sending verification passcode.", False)
 		"""
 		try:
 			#create entry in passcode table for verification
@@ -153,8 +155,6 @@ def Register(request):
 		# response_data['code'] = 'Success'
 		"""
 
-		# SMS api to send passcode
-		send_message(mobile, passcode, job=None, description="sending verification passcode", force=True)
 
 			
 		return Response(response_data, status = status.HTTP_201_CREATED)
@@ -166,6 +166,8 @@ def verify_and_create(request):
 	#verify passcode in PasscodeVerify table
 	response_data = {'code' : 'Invalid Data' }
 	if request.method == 'POST':
+		
+
 		try:
 			mobile = request.data['mobile']
 			passcode = request.data['passcode']
@@ -173,14 +175,19 @@ def verify_and_create(request):
 			return Response(response_data,status=status.HTTP_400_BAD_REQUEST)
 
 		try:
-			valid = UserProfile.objects.get(phoneNumber = mobile, device_ident = passcode, is_active = False)
+			# valid = UserProfile.objects.get(phoneNumber = mobile, device_ident = passcode, is_active = Fals	e)
+			valid = get_object_or_404(UserProfile, phoneNumber = mobile, device_ident = passcode)
 		except PasscodeVerify.DoesNotExist:
 			response_data['code'] = 'Invalid/Expired passcode'
 			return Response(response_data,status=status.HTTP_401_UNAUTHORIZED)
 
 		if valid:
-			valid.is_active = True
-			valid.save()
+			if valid.is_active:
+				response_data['code'] = 'User already activated'
+			else:
+				valid.is_active = True
+				response_data['code'] = 'Success'
+				valid.save()
 
 		"""
 		#Generate token 
@@ -195,8 +202,8 @@ def verify_and_create(request):
 
 		response_data['code'] = 'Success User created'
 		response_data['token'] = token
-
-		return Response(response_data,status=status.HTTP_403_FORBIDDEN)
 		"""
-
+		return Response(response_data,status=status.HTTP_201_CREATED)
 		
+
+

@@ -49,7 +49,7 @@ class UserProfileManager(BaseUserManager):
 	def create_superuser(self, password, phoneNumber=0):
 		"""Creates a new supersued"""
 
-		user = self.create_user(password, phoneNumber)
+		user = self.create_user(password, phoneNumber, "0000")
 
 		user.is_superuser = True
 		user.is_staff = True
