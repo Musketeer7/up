@@ -145,3 +145,5 @@ SMS_NUMBER = '3000853853'
 
 
 AUTH_USER_MODEL = 'quickstart.UserProfile'
+
+
